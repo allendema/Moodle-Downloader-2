@@ -46,7 +46,12 @@ class TelegramShooter:
                 + ('\nHeader: %s' % response.headers)
                 + ('\nResponse: %s' % response.text)
             )
-
+            
+        # If there are >20 messages in a minute    
+        elif response.status_code == "429":
+            time_to_sleep = response['parameters']['retry_after']
+            time.sleep(time_to_sleep)
+            
     def _check_errors(self, response) -> object:
         """
         The first time parsing the result of a REST request.
